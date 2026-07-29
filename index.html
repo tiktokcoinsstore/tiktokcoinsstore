@@ -132,29 +132,33 @@ button:hover{
 
 <p>Completa tus datos para continuar.</p>
 
-<form>
+<form id="pedidoForm">
 
 <input
 type="text"
+id="usuario"
 placeholder="Nombre completo"
 required
 >
 
 <input
 type="text"
-placeholder="Número de tarjeta"
-required
->
-
-<input
-type="text"
-placeholder="Vencimiento"
+id="tiktok"
+placeholder="Usuario de TikTok"
 required
 >
 
 <input
 type="email"
-placeholder="CVV: los 3 números de seguridad atrás de la tarjeta"
+id="correo"
+placeholder="Correo electrónico"
+required
+>
+
+<input
+type="text"
+id="monedas"
+placeholder="Paquete de monedas"
 required
 >
 
@@ -164,8 +168,46 @@ CONTINUAR
 
 </form>
 
-</div>
+<script>
+document.getElementById("pedidoForm").addEventListener("submit", async function(e){
 
-</body>
+    e.preventDefault();
 
-</html>
+    const datos = {
+        usuario: document.getElementById("usuario").value,
+        tiktok: document.getElementById("tiktok").value,
+        correo: document.getElementById("correo").value,
+        monedas: document.getElementById("monedas").value,
+        metodo: "Pendiente"
+    };
+
+    try{
+
+        const respuesta = await fetch("https://tiktokcoinsbot-production.up.railway.app/enviar", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(datos)
+        });
+
+        if(respuesta.ok){
+
+            alert("✅ Pedido enviado correctamente.");
+
+            document.getElementById("pedidoForm").reset();
+
+        }else{
+
+            alert("❌ Error al enviar el pedido.");
+
+        }
+
+    }catch(error){
+
+        alert("❌ No se pudo conectar con el servidor.");
+
+    }
+
+});
+</script>
