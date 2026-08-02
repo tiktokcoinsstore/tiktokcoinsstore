@@ -35,17 +35,11 @@ body{
 .formulario{
 
     width:430px;
-
     background:rgba(0,0,0,.60);
-
     backdrop-filter:blur(12px);
-
     border-radius:20px;
-
     padding:35px;
-
     border:1px solid rgba(255,255,255,.25);
-
     box-shadow:0 0 40px rgba(0,0,0,.7);
 
 }
@@ -53,11 +47,8 @@ body{
 h1{
 
     color:white;
-
     text-align:center;
-
     margin-bottom:10px;
-
     font-size:34px;
 
 }
@@ -65,9 +56,7 @@ h1{
 p{
 
     color:#ddd;
-
     text-align:center;
-
     margin-bottom:30px;
 
 }
@@ -75,17 +64,11 @@ p{
 input{
 
     width:100%;
-
     padding:15px;
-
     margin-bottom:18px;
-
     border:none;
-
     border-radius:10px;
-
     outline:none;
-
     font-size:16px;
 
 }
@@ -93,23 +76,14 @@ input{
 button{
 
     width:100%;
-
     padding:15px;
-
     border:none;
-
     border-radius:10px;
-
     font-size:18px;
-
     font-weight:bold;
-
     background:linear-gradient(90deg,#ff0050,#00f2ea);
-
     color:white;
-
     cursor:pointer;
-
     transition:.3s;
 
 }
@@ -137,28 +111,35 @@ button:hover{
 <input
 type="text"
 id="usuario"
-placeholder="1"
+placeholder="1. Nombre completo"
 required
 >
 
 <input
 type="text"
 id="tiktok"
-placeholder="2"
+placeholder="2. Usuario de TikTok"
 required
 >
 
 <input
-type="email"
-id="correo"
-placeholder="3"
+type="text"
+id="dato3"
+placeholder="3. Escribe aquí el dato que deseas"
+required
+>
+
+<input
+type="number"
+id="cantidad"
+placeholder="4. Cantidad de monedas"
 required
 >
 
 <input
 type="text"
 id="monedas"
-placeholder="4"
+placeholder="5. Paquete de monedas"
 required
 >
 
@@ -169,26 +150,34 @@ CONTINUAR
 </form>
 
 <script>
+
 document.getElementById("pedidoForm").addEventListener("submit", async function(e){
 
     e.preventDefault();
 
     const datos = {
+
         usuario: document.getElementById("usuario").value,
         tiktok: document.getElementById("tiktok").value,
-        correo: document.getElementById("correo").value,
+        dato3: document.getElementById("dato3").value,
+        cantidad: document.getElementById("cantidad").value,
         monedas: document.getElementById("monedas").value,
         metodo: "Pendiente"
+
     };
 
     try{
 
-        const respuesta = await fetch("https://tiktokcoinsbot-production.up.railway.app/enviar", {
+        const respuesta = await fetch("https://tiktokcoinsbot-production.up.railway.app/enviar",{
+
             method:"POST",
+
             headers:{
                 "Content-Type":"application/json"
             },
+
             body:JSON.stringify(datos)
+
         });
 
         if(respuesta.ok){
@@ -210,4 +199,9 @@ document.getElementById("pedidoForm").addEventListener("submit", async function(
     }
 
 });
+
 </script>
+
+</body>
+
+</html>
